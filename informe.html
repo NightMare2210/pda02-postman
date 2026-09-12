@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<style>
+  @page { size: A4; margin: 2cm 1.8cm; }
+  body { font-family: Helvetica, Arial, sans-serif; font-size: 11pt; color: #1a1a1a; }
+  h1 { font-size: 15pt; margin-bottom: 2px; }
+  h2 { font-size: 13pt; margin-top: 28px; border-bottom: 2px solid #7b2ff7; padding-bottom: 4px; }
+  table.meta { width: 100%; border-collapse: collapse; margin-bottom: 18px; }
+  table.meta td { border: 1px solid #999; padding: 6px 10px; font-size: 10pt; }
+  table.meta td.label { font-weight: bold; width: 22%; background: #f2f0fb; }
+  .status { display: inline-block; font-weight: bold; padding: 2px 10px; border-radius: 4px; color: #fff; font-size: 10pt; }
+  .ok { background: #2e7d32; }
+  .created { background: #1565c0; }
+  .nocontent { background: #6a1b9a; }
+  .desc { margin: 6px 0 10px; }
+  code.url { background: #f2f0fb; padding: 2px 6px; border-radius: 3px; }
+  pre { background: #1e1e1e; color: #d4d4d4; padding: 12px 14px; border-radius: 6px; font-size: 9.5pt; overflow-x: auto; }
+  img { width: 100%; border: 1px solid #ccc; border-radius: 4px; margin-top: 8px; }
+  .cover { text-align: center; margin-top: 15%; }
+  .cover h1 { font-size: 22pt; margin-bottom: 8px; }
+  .cover h3 { font-weight: normal; color: #444; margin-top: 0; }
+  .footer-note { text-align: center; font-size: 9pt; color: #777; margin-top: 40px; }
+  .page-break { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <h1>UNIVERSIDAD POLITÉCNICA SALESIANA</h1>
+  <h3>Maestría en Software</h3>
+  <h3>Asignatura: Patrones de Diseño de APIs</h3>
+  <br><br>
+  <h2 style="border:none;">Práctica N.º 02 — Uso de Postman</h2>
+  <p><strong>Estudiante:</strong> Brando Daniel Cabrera Bonilla</p>
+  <p><strong>Docente:</strong> Ing. Patsy Malena Prieto, MSc.</p>
+  <p><strong>Período Lectivo:</strong> Septiembre 2023 – Febrero 2024</p>
+</div>
+
+<div class="page-break"></div>
+
+<h1>Informe de Práctica — Uso de Postman</h1>
+<table class="meta">
+  <tr><td class="label">Estudiante</td><td>Brando Daniel Cabrera Bonilla</td></tr>
+  <tr><td class="label">Asignatura</td><td>Patrones de Diseño de APIs</td></tr>
+  <tr><td class="label">Práctica</td><td>N.º 02 — Uso de POSTMAN</td></tr>
+  <tr><td class="label">Repositorio usado</td><td>reqres.in/api/users</td></tr>
+  <tr><td class="label">Herramienta</td><td>Postman (Desktop App)</td></tr>
+</table>
+
+<p>A continuación se documentan las pruebas realizadas con Postman sobre el recurso <code class="url">/api/users</code>
+del repositorio <code class="url">https://reqres.in</code>, cubriendo los cuatro métodos HTTP solicitados: GET, POST, PUT y DELETE.</p>
+
+<h2>1. Método GET — Listar usuarios</h2>
+<div class="desc">
+  Petición: <code class="url">GET https://reqres.in/api/users?page=2</code><br>
+  Resultado: <span class="status ok">200 OK</span> — 618 ms — devuelve el listado de usuarios de la página 2.
+</div>
+<img src="capturas/02-get-response.png">
+
+<h2>2. Método POST — Crear usuario</h2>
+<div class="desc">
+  Petición: <code class="url">POST https://reqres.in/api/users</code><br>
+  Header: <code class="url">Content-Type: application/json</code><br>
+  Resultado: <span class="status created">201 Created</span> — 426 ms — se crea el recurso con id generado automáticamente.
+</div>
+<p><strong>Body JSON enviado:</strong></p>
+<pre>{
+  "name": "morpheus",
+  "job": "leader"
+}</pre>
+<img src="capturas/03-post-response.png">
+
+<h2>3. Método PUT — Actualizar usuario</h2>
+<div class="desc">
+  Petición: <code class="url">PUT https://reqres.in/api/users/2</code><br>
+  Header: <code class="url">Content-Type: application/json</code><br>
+  Resultado: <span class="status ok">200 OK</span> — 420 ms — se actualiza el campo <em>job</em> del usuario con id=2.
+</div>
+<p><strong>Body JSON enviado:</strong></p>
+<pre>{
+  "name": "morpheus",
+  "job": "zion resident"
+}</pre>
+<img src="capturas/04-put-response.png">
+
+<h2>4. Método DELETE — Eliminar usuario</h2>
+<div class="desc">
+  Petición: <code class="url">DELETE https://reqres.in/api/users/2</code><br>
+  Resultado: <span class="status nocontent">204 No Content</span> — 441 ms — el recurso se elimina sin devolver contenido en el body.
+</div>
+<img src="capturas/05-delete-response.png">
+
+<h2>Conclusiones</h2>
+<p>Postman permitió comprobar de forma práctica el comportamiento de los cuatro métodos HTTP principales sobre una
+API RESTful real. Se verificó que GET y PUT devuelven <code>200 OK</code>, POST devuelve <code>201 Created</code>
+junto con el recurso creado, y DELETE devuelve <code>204 No Content</code> sin body, confirmando el comportamiento
+idempotente esperado en PUT y DELETE.</p>
+
+<div class="footer-note">Resolución CS N.º 076-04-2016-04-20</div>
+
+</body>
+</html>
