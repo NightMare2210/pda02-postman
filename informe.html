@@ -7,6 +7,7 @@
   body { font-family: Helvetica, Arial, sans-serif; font-size: 11pt; color: #1a1a1a; }
   h1 { font-size: 15pt; margin-bottom: 2px; }
   h2 { font-size: 13pt; margin-top: 28px; border-bottom: 2px solid #7b2ff7; padding-bottom: 4px; }
+  h3 { font-size: 11.5pt; margin-top: 20px; margin-bottom: 4px; }
   table.meta { width: 100%; border-collapse: collapse; margin-bottom: 18px; }
   table.meta td { border: 1px solid #999; padding: 6px 10px; font-size: 10pt; }
   table.meta td.label { font-weight: bold; width: 22%; background: #f2f0fb; }
@@ -16,13 +17,15 @@
   .nocontent { background: #6a1b9a; }
   .desc { margin: 6px 0 10px; }
   code.url { background: #f2f0fb; padding: 2px 6px; border-radius: 3px; }
-  pre { background: #1e1e1e; color: #d4d4d4; padding: 12px 14px; border-radius: 6px; font-size: 9.5pt; overflow-x: auto; }
+  pre { background: #1e1e1e; color: #d4d4d4; padding: 12px 14px; border-radius: 6px; font-size: 9.5pt; }
   img { width: 100%; border: 1px solid #ccc; border-radius: 4px; margin-top: 8px; }
   .cover { text-align: center; margin-top: 15%; }
   .cover h1 { font-size: 22pt; margin-bottom: 8px; }
   .cover h3 { font-weight: normal; color: #444; margin-top: 0; }
   .footer-note { text-align: center; font-size: 9pt; color: #777; margin-top: 40px; }
   .page-break { page-break-before: always; }
+  ol.refs li { margin-bottom: 10px; }
+  ol.conclusiones li { margin-bottom: 10px; }
 </style>
 </head>
 <body>
@@ -40,7 +43,7 @@
 
 <div class="page-break"></div>
 
-<h1>Informe de Práctica — Uso de Postman</h1>
+<h1>Práctica: Uso de Postman</h1>
 <table class="meta">
   <tr><td class="label">Estudiante</td><td>Brando Daniel Cabrera Bonilla</td></tr>
   <tr><td class="label">Asignatura</td><td>Patrones de Diseño de APIs</td></tr>
@@ -49,54 +52,89 @@
   <tr><td class="label">Herramienta</td><td>Postman (Desktop App)</td></tr>
 </table>
 
-<p>A continuación se documentan las pruebas realizadas con Postman sobre el recurso <code class="url">/api/users</code>
-del repositorio <code class="url">https://reqres.in</code>, cubriendo los cuatro métodos HTTP solicitados: GET, POST, PUT y DELETE.</p>
+<h2>Descripción de la actividad</h2>
+<p>El objetivo de esta práctica es identificar las ventajas y desventajas del uso de una API RESTful mediante la
+herramienta Postman. Para ello se creó un workspace con el nombre de la asignatura y, dentro de él, una collection
+llamada <em>reqres-users</em> con una request por cada método HTTP a probar: GET, POST, PUT y DELETE.</p>
+<p>Como repositorio de datos se utilizó <code class="url">https://reqres.in/api/users</code>, un servicio público que
+simula una API REST de usuarios y responde con los códigos de estado esperados para cada operación. En POST y PUT se
+envió un cuerpo en formato JSON (crudo, con header <code class="url">Content-Type: application/json</code>), replicando
+la interacción típica entre un frontend y un backend.</p>
 
-<h2>1. Método GET — Listar usuarios</h2>
+<h2>Captura de Pantallas Funcionales</h2>
+
+<h3>1. Método GET — Listar usuarios</h3>
 <div class="desc">
   Petición: <code class="url">GET https://reqres.in/api/users?page=2</code><br>
-  Resultado: <span class="status ok">200 OK</span> — 618 ms — devuelve el listado de usuarios de la página 2.
+  Resultado: <span class="status ok">200 OK</span> — 618 ms.
 </div>
+<p>Se solicita la página 2 del listado de usuarios. Al no requerir body ni headers especiales, el servidor responde
+inmediatamente con el arreglo <code>data</code> conteniendo los usuarios de esa página.</p>
 <img src="capturas/02-get-response.png">
 
-<h2>2. Método POST — Crear usuario</h2>
+<h3>2. Método POST — Crear usuario</h3>
 <div class="desc">
   Petición: <code class="url">POST https://reqres.in/api/users</code><br>
   Header: <code class="url">Content-Type: application/json</code><br>
-  Resultado: <span class="status created">201 Created</span> — 426 ms — se crea el recurso con id generado automáticamente.
+  Resultado: <span class="status created">201 Created</span> — 426 ms.
 </div>
-<p><strong>Body JSON enviado:</strong></p>
+<p>Se envía el siguiente cuerpo en la pestaña Body → raw → JSON. El servidor genera automáticamente el <code>id</code>
+y un <code>createdAt</code>, y los devuelve junto con los datos enviados:</p>
 <pre>{
   "name": "morpheus",
   "job": "leader"
 }</pre>
 <img src="capturas/03-post-response.png">
 
-<h2>3. Método PUT — Actualizar usuario</h2>
+<h3>3. Método PUT — Actualizar usuario</h3>
 <div class="desc">
   Petición: <code class="url">PUT https://reqres.in/api/users/2</code><br>
   Header: <code class="url">Content-Type: application/json</code><br>
-  Resultado: <span class="status ok">200 OK</span> — 420 ms — se actualiza el campo <em>job</em> del usuario con id=2.
+  Resultado: <span class="status ok">200 OK</span> — 420 ms.
 </div>
-<p><strong>Body JSON enviado:</strong></p>
+<p>Se actualiza el campo <em>job</em> del usuario con id=2. A diferencia de POST, PUT es idempotente: repetir la misma
+petición deja el recurso en el mismo estado.</p>
 <pre>{
   "name": "morpheus",
   "job": "zion resident"
 }</pre>
 <img src="capturas/04-put-response.png">
 
-<h2>4. Método DELETE — Eliminar usuario</h2>
+<h3>4. Método DELETE — Eliminar usuario</h3>
 <div class="desc">
   Petición: <code class="url">DELETE https://reqres.in/api/users/2</code><br>
-  Resultado: <span class="status nocontent">204 No Content</span> — 441 ms — el recurso se elimina sin devolver contenido en el body.
+  Resultado: <span class="status nocontent">204 No Content</span> — 441 ms.
 </div>
+<p>Se elimina el recurso identificado en la URI. El servidor responde sin body, confirmando que la operación se
+ejecutó correctamente.</p>
 <img src="capturas/05-delete-response.png">
 
+<h2>Código Fuente</h2>
+<p>El respaldo completo de la práctica (collection de Postman exportada, archivos JSON usados y capturas de pantalla)
+se encuentra publicado en el siguiente repositorio de GitHub:</p>
+<p><code class="url">https://github.com/NightMare2210/pda02-postman</code></p>
+
 <h2>Conclusiones</h2>
-<p>Postman permitió comprobar de forma práctica el comportamiento de los cuatro métodos HTTP principales sobre una
-API RESTful real. Se verificó que GET y PUT devuelven <code>200 OK</code>, POST devuelve <code>201 Created</code>
-junto con el recurso creado, y DELETE devuelve <code>204 No Content</code> sin body, confirmando el comportamiento
-idempotente esperado en PUT y DELETE.</p>
+<ol class="conclusiones">
+  <li>Postman permite comprobar de forma práctica el comportamiento de los métodos HTTP sobre una API RESTful real,
+  sin necesidad de escribir código de frontend: se verificó que GET y PUT devuelven <code>200 OK</code>, POST devuelve
+  <code>201 Created</code> junto con el recurso creado, y DELETE devuelve <code>204 No Content</code> sin body.</li>
+  <li>La idempotencia de PUT y DELETE, frente al comportamiento no idempotente de POST, es una diferencia técnica clave
+  al diseñar una API: repetir una petición PUT o DELETE sobre el mismo recurso no cambia el resultado final, mientras
+  que repetir un POST crea un nuevo recurso cada vez.</li>
+</ol>
+
+<h2>Bibliografía</h2>
+<ol class="refs">
+  <li>Postman, Inc. (s.f.). <em>Postman API Platform</em>. Recuperado en 2026, de https://www.postman.com/</li>
+  <li>Mozilla Foundation. (s.f.). <em>Métodos de petición HTTP</em>. MDN Web Docs. Recuperado en 2026, de
+  https://developer.mozilla.org/es/docs/Web/HTTP/Methods</li>
+  <li>Mozilla Foundation. (s.f.). <em>Códigos de estado de respuesta HTTP</em>. MDN Web Docs. Recuperado en 2026, de
+  https://developer.mozilla.org/es/docs/Web/HTTP/Status</li>
+  <li>JSON.org. (s.f.). <em>Introducing JSON</em>. Recuperado en 2026, de https://www.json.org/json-en.html</li>
+  <li>ReqRes. (s.f.). <em>ReqRes: A hosted REST-API ready to respond to your AJAX requests</em>. Recuperado en 2026,
+  de https://reqres.in/</li>
+</ol>
 
 <div class="footer-note">Resolución CS N.º 076-04-2016-04-20</div>
 
